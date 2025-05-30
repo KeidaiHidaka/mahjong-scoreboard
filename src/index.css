@@ -114,6 +114,23 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* 追加が必要なスタイル */
+@keyframes dialogShow {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dialog-overlay {
+  background-color: rgba(0, 0, 0, 0.8);
+  transition: opacity 0.3s ease;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -121,4 +138,18 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+.btn-blue {
+  background-color: #3b82f6;
+}
+.btn-green {
+  background-color: #10b981;
+}
+.btn-purple {
+  background-color: #8b5cf6;
+}
+.btn-orange {
+  background-color: #f97316;
 }

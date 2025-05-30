@@ -1,17 +1,26 @@
-// PaymentPreviewModal.tsx を新規作成
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+
+// 外部の関数（スコア計算）は仮で定義
+import { calculateRonScore, calculateTsumoScore } from "@/lib/scoreUtils"; 
 
 interface PaymentPreviewModalProps {
   han: number;
   fu: number;
   isOpen: boolean;
+  agariType: "ron" | "tsumo";
   onConfirm: (isDealer: boolean, isTsumo: boolean) => void;
   onCancel: () => void;
 }
 
-export function PaymentPreviewModal({ han, fu, isOpen, onConfirm, onCancel }: PaymentPreviewModalProps) {
-  // 点数計算
+export function PaymentPreviewModal({
+  han,
+  fu,
+  isOpen,
+  agariType,
+  onConfirm,
+  onCancel,
+}: PaymentPreviewModalProps) {
   const ronDealer = calculateRonScore(han, fu, true);
   const ronNonDealer = calculateRonScore(han, fu, false);
   const tsumoPayments = calculateTsumoScore(han, fu, false);
@@ -69,37 +78,26 @@ export function PaymentPreviewModal({ han, fu, isOpen, onConfirm, onCancel }: Pa
 
           {/* アクションボタン */}
           <div className="flex flex-col gap-2 pt-4">
-            <Button 
-              onClick={() => onConfirm(true, false)}
-              className="bg-blue-600 hover:bg-blue-700"
-            >
-              親のロンを適用
-            </Button>
-            <Button 
-              onClick={() => onConfirm(false, false)}
-              className="bg-green-600 hover:bg-green-700"
-            >
-              子のロンを適用
-            </Button>
-            <Button 
-              onClick={() => onConfirm(false, true)}
-              variant="outline"
-              className="border-blue-500 text-blue-600"
-            >
-              子のツモを適用
-            </Button>
-            <Button 
-              onClick={() => onConfirm(true, true)}
-              variant="outline"
-              className="border-blue-500 text-blue-600"
-            >
-              親のツモを適用
-            </Button>
-            <Button 
-              onClick={onCancel}
-              variant="ghost"
-              className="text-gray-500"
-            >
+            {agariType === "ron" ? (
+              <>
+                <Button onClick={() => onConfirm(true, false)} variant="oyaRon">
+                  親のロンを適用
+                </Button>
+                <Button onClick={() => onConfirm(false, false)} variant="koRon">
+                  子のロンを適用
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button onClick={() => onConfirm(true, true)} variant="oyaTsumo">
+                  親のツモを適用
+                </Button>
+                <Button onClick={() => onConfirm(false, true)} variant="koTsumo">
+                  子のツモを適用
+                </Button>
+              </>
+            )}
+            <Button onClick={onCancel} variant="ghost">
               キャンセル
             </Button>
           </div>
